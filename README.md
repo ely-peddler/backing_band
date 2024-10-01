@@ -1,2 +1,2 @@
 # backing_band
-A Tulip app to play a backing track
+A [Tulip](http://tulip.computer) app to play a backing track
