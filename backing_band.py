@@ -50,6 +50,9 @@ def current_int_bpm():
 def run(screen):
     global app
     app = screen
+    tulip.UIScreen.load_delay = 10
+    tulip.UIScreen.default_offset_x = 10
+    tulip.UIScreen.default_offset_y = 10
     app.slot = None
     tulip.seq_bpm(100)
     app.chord = music.Chord("F:min7").midinotes()
@@ -61,14 +64,21 @@ def run(screen):
     app.bpm_label = tulip.UILabel(current_int_bpm(), font=lv.font_unscii_16)
     app.bpm_label.label.set_style_text_align(lv.TEXT_ALIGN.CENTER,0)
     app.bpm_label.label.set_style_bg_color(lv.color_hex(0x003a57), lv.PART.MAIN)
-    app.add(tulip.UILabel('BPM', font=lv.font_montserrat_24), x=10, y=30)
-    app.add(dec_pbm_button, x=80, y=0)
-    app.add(app.bpm_label, x=180, y=35)
-    app.add(inc_pbm_button, x=230, y=0) 
+    app.add(tulip.UILabel('BPM', font=lv.font_montserrat_24), x=10, y=20)
+    app.add(dec_pbm_button, x=70, y=-10)
+    app.add(app.bpm_label, x=160, y=25)
+    app.add(inc_pbm_button, x=210, y=-10) 
     play_button = tulip.UIButton(lv.SYMBOL.PLAY, font=lv.font_montserrat_18, callback=play)
     pause_button = tulip.UIButton(lv.SYMBOL.PAUSE, font=lv.font_montserrat_18, callback=pause)
-    app.add(play_button, x=340, y=0)
-    app.add(pause_button, x=420, y=0)
+    app.add(play_button, x=340, y=-10)
+    app.add(pause_button, x=420, y=-10)
+    # replace the default quit and tab buttons
+    screen.alttab_button = tulip.UIButton(lv.SYMBOL.SHUFFLE, font=lv.font_montserrat_18, callback=screen.alttab_callback)
+    app.add(screen.alttab_button, x=870, y=-10)
+    screen.quit_button = tulip.UIButton(lv.SYMBOL.CLOSE, font=lv.font_montserrat_18, callback=screen.screen_quit_callback)
+    app.quit_button.button.set_style_bg_color(tulip.pal_to_lv(128), lv.PART.MAIN)
+    app.add(screen.quit_button, x=950, y=-10)
+    
     # bpm_slider = tulip.UISlider(tulip.seq_bpm()/1.5, w=600, h=25,
     #     callback=bpm_change, bar_color=123, handle_color=23)
     # app.add(bpm_slider, x=150,y=100)
